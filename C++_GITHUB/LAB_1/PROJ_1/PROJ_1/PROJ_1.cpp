@@ -57,8 +57,12 @@ int main() {
         }
     }
 
+    cout << "Answer: ";
+
+	cout << "C = ";
+
     for (int i = 0; i < CMAS; i++) {
-        cout << "C[" << i + 1 << "] = " << C[i] << endl;
+        cout << C[i] << " ";
     }
 
     return 0;
