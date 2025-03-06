@@ -12,7 +12,7 @@ int main()
 
 	int resultat;
 
-	resultat = (a + a +  (a<< 4) + 312 * d) / 512 - b * 122 + c * 123;
+	resultat = (a + a +  (a<< 4) + (8 << d) + (6 << d) + d+ d) / 512 - b * 122 + c * 123;
 
 
 	return 0;
