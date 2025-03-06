@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C\u002B\u002B_GITHUB\\LAB_1\\PROJ_1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{88D10942-A748-45EA-B13A-47A3673BF7C0}|PROJ_1\\PROJ_1.vcxproj|C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C\u002B\u002B_GITHUB\\LAB_1\\PROJ_1\\PROJ_1\\PROJ_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{88D10942-A748-45EA-B13A-47A3673BF7C0}|PROJ_1\\PROJ_1.vcxproj|solutionrelative:PROJ_1\\PROJ_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PROJ_1.cpp",
+              "DocumentMoniker": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C\u002B\u002B_GITHUB\\LAB_1\\PROJ_1\\PROJ_1\\PROJ_1.cpp",
+              "RelativeDocumentMoniker": "PROJ_1\\PROJ_1.cpp",
+              "ToolTip": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C\u002B\u002B_GITHUB\\LAB_1\\PROJ_1\\PROJ_1\\PROJ_1.cpp*",
+              "RelativeToolTip": "PROJ_1\\PROJ_1.cpp*",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAEAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-02-27T22:28:11.267Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
