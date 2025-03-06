@@ -12,7 +12,9 @@ int main()
 
 	int resultat;
 
-	resultat = (a + a +  (a<< 4) + (8 << d) + (6 << d) + d+ d) / 512 - b * 122 + c * 123;
+	resultat = ((a + a +  (a<< 4) + (8 << d) + (6 << d) + d + d) >> 9) - (b << 7) - b - b + (c << 7) - c;
+
+	std::cout << "Resultat = " << resultat << std::endl;
 
 
 	return 0;
