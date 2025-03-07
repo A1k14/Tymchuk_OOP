@@ -51,13 +51,15 @@ int main(char InS[64], unsigned short OutCoding[64])
 			OutCoding[i] = r;
 		}
 	}
-	struct TextCode {
-		unsigned short schkb : 4;
-		unsigned short posrow : 7;
-		unsigned short bitp : 1;
-		unsigned short mchkb : 4;
+struct TextCode {
+	unsigned short row : 4;       // Номер рядка символу (4 біти)
+	unsigned short ascii_low : 4; // Молодша частина ASCII-коду (4 біти)
+	unsigned short parity1 : 1;   // Біт парності перших двох полів (1 біт)
+	unsigned short ascii_high : 4;// Старша частина ASCII-коду (4 біти)
+	unsigned short col : 2;       // Позиція символу в рядку (2 біти)
+	unsigned short parity2 : 1;   // Біт парності попередніх двох полів (1 біт)
+};
 
-	};
 	unsigned char pbit(unsigned char c)
 	{
 		unsigned char t = 1, b = 0;
