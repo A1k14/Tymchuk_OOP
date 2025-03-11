@@ -29,14 +29,22 @@ int main() {
     char S[16][5]; 
     TextCode Rez[64];
 
-    cout << "Введіть текст (максимум 16 рядків по 4 символи):" << endl;
+    
+    ifstream ifs("tsk.txt");
+    if (!ifs) {
+        cout << "Файл tsk.txt не відкритий" << endl;
+        return 1;
+    }
+
+    
     for (int i = 0; i < 16; i++) {
-        cin.getline(S[i], 5); 
+        ifs.getline(S[i], 5); 
         for (int j = strlen(S[i]); j < 4; j++) {
             S[i][j] = ' ';
         }
-        S[i][4] = '\0';
+        S[i][4] = '\0'; 
     }
+    ifs.close(); 
 
     // Виклик функції шифрування
     
