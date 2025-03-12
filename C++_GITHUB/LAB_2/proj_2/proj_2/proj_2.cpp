@@ -39,6 +39,7 @@ int main() {
     
     for (int i = 0; i < 16; i++) {
         ifs.getline(S[i], 5); 
+        
         for (int j = strlen(S[i]); j < 4; j++) {
             S[i][j] = ' ';
         }
@@ -47,9 +48,17 @@ int main() {
     ifs.close(); 
 
     // Виклик функції шифрування
-    
 
-   
+
+    
+    cout << "Зашифровані дані:" << endl;
+    for (int i = 0; i < 64; i++) {
+        char c = (Rez[i].mchkb << 4) | Rez[i].schkb; 
+        cout << "Рядок: " << Rez[i].posrow << ", Позиція: " << Rez[i].poscol
+            << ", Символ: '" << c << "', Біт парності: " << Rez[i].bitp << endl;
+    }
+
+    
     ofstream ofsb("outbs.bin", ios::out | ios::binary);
     if (!ofsb) {
         cout << "Файл outbs.bin не відкритий" << endl;
