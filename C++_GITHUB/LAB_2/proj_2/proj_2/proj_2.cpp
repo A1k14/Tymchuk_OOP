@@ -43,45 +43,92 @@ static void MyEncryption(char InS[16][5], TextCode OutCoding[64]) {
     }
 }
 
+static void MyDecryption(TextCode InCoding[64], char OutS[16][5]) {
+    for (int i = 0; i < 64; i++) {
+        unsigned char c = (InCoding[i].mchkb << 4) | InCoding[i].schkb;
+        OutS[InCoding[i].posrow][InCoding[i].poscol] = c;
+    }
+    for (int row = 0; row < 16; row++) {
+        OutS[row][4] = '\0';
+    }
+}
+
 int main() {
     char S[16][5] = { 0 };
     TextCode Rez[64];
 
-    // Зчитування з файлу tsk.txt
-    ifstream infile("tsk.txt");
-    if (!infile) {
-        cout << "File tsk.txt not open" << endl;
-        return 1;
-    }
+    while (true) {
+        cout << "Choose an option:\n1. Encrypt\n2. Decrypt\n3. Exit\n";
+        int choice;
+        cin >> choice;
 
-    for (int i = 0; i < 16; i++) {
-        infile.getline(S[i], 5);
-        int len = strlen(S[i]);
-        for (int j = len; j < 4; j++) {
-            S[i][j] = ' ';
+        if (choice == 1) {
+            ifstream infile("tsk.txt");
+            if (!infile) {
+                cout << "File tsk.txt not open" << endl;
+                return 1;
+            }
+
+            for (int i = 0; i < 16; i++) {
+                infile.getline(S[i], 5);
+                int len = strlen(S[i]);
+                for (int j = len; j < 4; j++) {
+                    S[i][j] = ' ';
+                }
+                S[i][4] = '\0';
+            }
+            infile.close();
+
+            MyEncryption(S, Rez);
+
+            
+            ofstream ofsb("outb.bin", ios::out | ios::binary);
+            if (!ofsb) {
+                cout << "File outb.bin not open" << endl;
+            }
+            else {
+                ofsb.write((char*)Rez, 64 * sizeof(TextCode));
+                ofsb.close();
+                cout << "Data written to outb.bin" << endl;
+            }
+
+            cout << "\nEncrypted data:\n";
+            for (int i = 0; i < 64; i++) {
+                unsigned short encoded = (Rez[i].mchkb << 12) | (Rez[i].bitp << 11) | (Rez[i].posrow << 7) | (Rez[i].poscol << 5) | (Rez[i].schkb);
+                cout << hex << setw(4) << setfill('0') << encoded << endl;
+            }
+
         }
-        S[i][4] = '\0';
-    }
-    infile.close();
+    
+            else if (choice == 2) {
 
-    MyEncryption(S, Rez);
+        ifstream ifsb("outb.bin", ios::in | ios::binary);
+        if (!ifsb) {
+            cout << "File outb.bin not open" << endl;
+            return 1;
+        }
 
-    // Запис результатів у файл outb.bin
-    ofstream ofsb("outb.bin", ios::out | ios::binary);
-    if (!ofsb) {
-        cout << "File outb.bin not open" << endl;
-    }
-    else {
-        ofsb.write((char*)Rez, 64 * sizeof(unsigned short));
-        ofsb.close();
-        cout << "Data written to outb.bin" << endl;
-    }
+        ifsb.read((char*)Rez, 64 * sizeof(TextCode));
+        ifsb.close();
 
-    // Вивід зашифрованих даних на екран
-    cout << "\nEncrypted data:\n";
-    for (int i = 0; i < 64; i++) {
-        unsigned short encoded = (Rez[i].mchkb << 12) | (Rez[i].bitp << 11) | (Rez[i].posrow << 7) | (Rez[i].poscol << 5) | (Rez[i].schkb);
-        cout << hex << setw(4) << setfill('0') << encoded << endl;
+        char Decrypted[16][5] = { 0 };
+        MyDecryption(Rez, Decrypted);
+
+        cout << "Data read from outb.bin" << endl;
+        cout << "String  ";
+        for (int i = 0; i < 16; i++) {
+            cout << Decrypted[i] << " ";
+        }
+        cout << endl;
+        }
+        
+        else if (choice == 3) {
+            cout << "Exiting the program." << endl;
+            break; 
+        }
+        else {
+            cout << "Invalid choice. Please select 1 for encryption, 2 for decryption, or 3 to exit." << endl;
+        }
     }
 
     return 0;
