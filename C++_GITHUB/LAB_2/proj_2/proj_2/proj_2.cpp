@@ -29,7 +29,7 @@ static void MyEncryption(char InS[16][5], TextCode OutCoding[64]) {
     for (int row = 0; row < 16; row++) {
         for (int col = 0; col < 4; col++) {
             char c = InS[row][col];
-            if (c == '\0') c = ' ';
+            if (c == '\0') c = ' '; 
 
             OutCoding[row * 4 + col].schkb = c & 0x0F;
             OutCoding[row * 4 + col].mchkb = (c >> 4) & 0x0F;
