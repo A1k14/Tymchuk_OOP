@@ -1,0 +1,7 @@
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\bin\Debug\LAB_!_PROJ_1.exe.config
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\bin\Debug\LAB_!_PROJ_1.exe
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\bin\Debug\LAB_!_PROJ_1.pdb
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\obj\Debug\LAB_!_PROJ_1.csproj.AssemblyReference.cache
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\obj\Debug\LAB_!_PROJ_1.csproj.CoreCompileInputs.cache
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\obj\Debug\LAB_!_PROJ_1.exe
+C:\Users\mainb\OneDrive\Desktop\OOP\C#_GITHUB\LAB_!_PROJ_1\LAB_!_PROJ_1\obj\Debug\LAB_!_PROJ_1.pdb

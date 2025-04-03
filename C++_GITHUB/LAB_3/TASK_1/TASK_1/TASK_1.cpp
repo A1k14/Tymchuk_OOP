@@ -15,13 +15,10 @@ private:
     vector<string> allowedColors = { "red", "blue" };
 
 public:
-    // Конструктор за замовчуванням
     Rectangle() : height(1.0), width(1.0), color("red") {}
 
-    // Конструктор з параметрами
     Rectangle(double h, double w, string c) : height(h), width(w), color(c) {}
 
-    // Функції встановлення полів з перевіркою коректності
     void setHeight(double h) {
         if (h > 0) {
             height = h;
@@ -57,16 +54,13 @@ public:
         }
     }
 
-    // Функції отримання значень полів
     double getHeight() const { return height; }
     double getWidth() const { return width; }
     string getColor() const { return color; }
 
-    // Функції обчислення площі та периметру
     double calculateArea() const { return height * width; }
     double calculatePerimeter() const { return 2 * (height + width); }
 
-    // Функція друку
     void print() const {
         cout << "Height: " << height << endl;
         cout << "Width: " << width << endl;
@@ -86,7 +80,6 @@ int main() {
     cout << "2. Random number generation" << endl;
     cin >> choice;
 
-    // Перевірка, чи введено коректне число
     while (cin.fail()) {
         cout << "Invalid input. Please enter a number: ";
         cin.clear();
@@ -124,7 +117,7 @@ int main() {
 
     }
     else if (choice == 2) {
-        srand(time(0)); // Ініціалізація генератора випадкових чисел
+        srand(time(0)); 
 
         double min = 0.0;
         double max = 100.0;
@@ -132,7 +125,7 @@ int main() {
         height = min + ((double)rand() / RAND_MAX) * (max - min);
         width = min + ((double)rand() / RAND_MAX) * (max - min);
 
-        int colorIndex = rand() % 2; // 0 або 1
+        int colorIndex = rand() % 2; 
         if (colorIndex == 0) {
             color = "red";
         }

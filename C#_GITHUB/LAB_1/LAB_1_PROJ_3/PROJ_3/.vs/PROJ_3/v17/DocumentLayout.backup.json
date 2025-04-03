@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C#_GITHUB\\LAB_1\\LAB_1_PROJ_3\\PROJ_3\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{89276813-97C7-499B-972D-C37D724094D7}|PROJ_3\\PROJ_3.csproj|c:\\users\\mainb\\onedrive\\desktop\\oop\\c#_github\\lab_1\\lab_1_proj_3\\proj_3\\proj_3\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{89276813-97C7-499B-972D-C37D724094D7}|PROJ_3\\PROJ_3.csproj|solutionrelative:proj_3\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C#_GITHUB\\LAB_1\\LAB_1_PROJ_3\\PROJ_3\\PROJ_3\\Program.cs",
+              "RelativeDocumentMoniker": "PROJ_3\\Program.cs",
+              "ToolTip": "C:\\Users\\mainb\\OneDrive\\Desktop\\OOP\\C#_GITHUB\\LAB_1\\LAB_1_PROJ_3\\PROJ_3\\PROJ_3\\Program.cs*",
+              "RelativeToolTip": "PROJ_3\\Program.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T09:39:02.378Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
