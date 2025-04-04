@@ -18,7 +18,7 @@ private:
     int size;
     static int objectCount;
 
-    void swap(VectorDouble& other) noexcept {
+    void swap(VectorDouble& other)  {
         using std::swap;
         swap(data, other.data);
         swap(size, other.size);
@@ -74,12 +74,12 @@ public:
         }
     }
 
-    ~VectorDouble() noexcept {
+    ~VectorDouble()  {
         delete[] data;
         objectCount--;
     }
 
-    VectorDouble& operator=(VectorDouble other) noexcept { swap(other); return *this; }
+    VectorDouble& operator=(VectorDouble other)  { swap(other); return *this; }
 
     VectorDouble operator+(const VectorDouble& other) const {
         if (size != other.size) throw invalid_argument("Vectors must have the same size for operator+");

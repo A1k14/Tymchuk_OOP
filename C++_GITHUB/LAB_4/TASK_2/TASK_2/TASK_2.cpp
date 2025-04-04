@@ -1,17 +1,19 @@
-#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <stdexcept>
 #include <limits>
+#include <ctime>
+#include <cstdlib>
+#include <unordered_map>
 
 using namespace std;
 
 class DomainIpMap {
 private:
-    vector<string> domainNames;
-    vector<string> ipAddresses;
+    unordered_map<string, string> domainToIp;
+    unordered_map<string, string> ipToDomain;
 
 public:
     DomainIpMap() {}
@@ -20,70 +22,85 @@ public:
 
     DomainIpMap(int size, const string* domains, const string* ips) {
         if (domains == nullptr || ips == nullptr || size <= 0) {
-            cerr << "Warning: Invalid arguments passed to constructor. Map is empty." << endl;
             return;
         }
-        domainNames.reserve(size);
-        ipAddresses.reserve(size);
+        domainToIp.reserve(size);
+        ipToDomain.reserve(size);
         for (int i = 0; i < size; ++i) {
-            domainNames.push_back(domains[i]);
-            ipAddresses.push_back(ips[i]);
+            AddMapping(domains[i], ips[i]);
         }
     }
 
     void AddMapping(const string& domain, const string& ip) {
-        domainNames.push_back(domain);
-        ipAddresses.push_back(ip);
+        if (domain.empty() || ip.empty()) {
+            return;
+        }
+        domainToIp[domain] = ip;
+        ipToDomain[ip] = domain;
     }
 
     void PrintTable() const {
-        cout << "--- Domain <-> IP Table ---" << endl;
-        if (domainNames.empty()) {
+        cout << "\n--- Domain <-> IP Table ---" << endl;
+        if (domainToIp.empty()) {
             cout << "  (empty)" << endl;
+            cout << "-----------------------------" << endl;
             return;
         }
         cout << "Domain Name         \tIP Address" << endl;
         cout << "---------------------\t--------------" << endl;
-        for (size_t i = 0; i < domainNames.size(); ++i) {
-            cout << domainNames[i] << "\t\t" << ipAddresses[i] << endl;
+        for (const auto& pair : domainToIp) {
+            const string& domain = pair.first;
+            const string& ip = pair.second;
+            cout << domain;
+            if (domain.length() < 8) {
+                cout << "\t\t\t";
+            }
+            else if (domain.length() < 16) {
+                cout << "\t\t";
+            }
+            else {
+                cout << "\t";
+            }
+            cout << ip << endl;
         }
         cout << "-----------------------------" << endl;
     }
 
-    // Основний пошук: Домен -> IP
     string operator[](const string& domain) const {
-        for (size_t i = 0; i < domainNames.size(); ++i) {
-            if (domainNames[i] == domain) {
-                return ipAddresses[i];
-            }
+        try {
+            return domainToIp.at(domain);
         }
-        throw std::out_of_range("Domain not found: " + domain);
+        catch (const std::out_of_range& oor) {
+            throw std::out_of_range("Domain not found: " + domain);
+        }
     }
 
-    // Метод для зворотного пошуку: IP -> Домен
     string getDomainByIp(const string& ip) const {
-        for (size_t i = 0; i < ipAddresses.size(); ++i) {
-            if (ipAddresses[i] == ip) {
-                return domainNames[i];
-            }
+        try {
+            return ipToDomain.at(ip);
         }
-        throw std::out_of_range("IP address not found: " + ip);
+        catch (const std::out_of_range& oor) {
+            throw std::out_of_range("IP address not found: " + ip);
+        }
     }
 
-    // Альтернативне звернення ТІЛЬКИ для Домен -> IP
     string operator()(const string& domain) const {
-        return (*this)[domain]; // Викликає operator[]
+        return (*this)[domain];
     }
 
-    // Метод для отримання розміру
     size_t size() const {
-        return domainNames.size();
+        return domainToIp.size();
     }
 
     friend ostream& operator<<(ostream& os, const DomainIpMap& dmap) {
         os << "DomainIpMap Contents (" << dmap.size() << " entries):" << endl;
-        for (size_t i = 0; i < dmap.domainNames.size(); ++i) {
-            os << "  " << dmap.domainNames[i] << " -> " << dmap.ipAddresses[i] << endl;
+        if (dmap.domainToIp.empty()) {
+            os << "  (map is empty)" << endl;
+        }
+        else {
+            for (const auto& pair : dmap.domainToIp) {
+                os << "  " << pair.first << " -> " << pair.second << endl;
+            }
         }
         return os;
     }
@@ -99,19 +116,20 @@ public:
             is.setstate(ios::failbit);
             if (&is == &cin) {
                 cerr << "Error reading count or invalid count entered." << endl;
+                is.clear();
+                is.ignore(numeric_limits<streamsize>::max(), '\n');
             }
             return is;
         }
         is.ignore(numeric_limits<streamsize>::max(), '\n');
 
-
-        dmap.domainNames.clear();
-        dmap.ipAddresses.clear();
+        dmap.domainToIp.clear();
+        dmap.ipToDomain.clear();
 
         if (count == 0) return is;
 
-        dmap.domainNames.reserve(count);
-        dmap.ipAddresses.reserve(count);
+        dmap.domainToIp.reserve(count);
+        dmap.ipToDomain.reserve(count);
 
         string domain, ip;
         for (int i = 0; i < count; ++i) {
@@ -127,13 +145,7 @@ public:
                 is.setstate(ios::failbit); return is;
             }
 
-            if (!domain.empty() && !ip.empty()) {
-                dmap.AddMapping(domain, ip);
-            }
-            else {
-                if (&is == &cin)
-                    cerr << "Warning: Skipping empty domain or IP entry for item " << i + 1 << "." << endl;
-            }
+            dmap.AddMapping(domain, ip);
         }
         return is;
     }
@@ -141,81 +153,105 @@ public:
 
 
 int main() {
-    cout << "--- Begin Domain/IP Test (with Exceptions) ---" << endl;
+    srand(time(0));
 
-    const int N = 5;
-    string domains[N] = { "google.com", "example.com", "test.org", "local.dev", "google.com" };
-    string ips[N] = { "172.217.160.142", "93.184.216.34", "192.0.2.1", "127.0.0.1", "216.58.214.206" };
+    cout << "--- Begin Domain/IP Mapping Program ---" << endl;
 
-    DomainIpMap dnsCache(N, domains, ips);
+    DomainIpMap dnsCache;
+
+    cout << "\nChoose initial data entry mode:\n";
+    cout << "1 - Enter data manually\n";
+    cout << "2 - Use predefined dataset\n";
+    cout << "Your choice: ";
+    int choice;
+
+    while (!(cin >> choice) || (choice != 1 && choice != 2)) {
+        cout << "Invalid choice. Please enter 1 or 2: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (choice == 1) {
+        cout << "\n--- Manual Entry Mode ---" << endl;
+        if (!(cin >> dnsCache)) {
+            cerr << "Exiting program due to initial data entry error." << endl;
+            return 1;
+        }
+        cout << "Initial data entered successfully." << endl;
+
+    }
+    else {
+        cout << "\n--- Predefined Data Mode ---" << endl;
+        const int N = 5;
+        string domains[N] = { "google.com", "example.com", "test.org", "local.dev", "google.com" };
+        string ips[N] = { "172.217.160.142", "93.184.216.34", "192.0.2.1", "127.0.0.1", "216.58.214.206" };
+
+        for (int i = 0; i < N; ++i) {
+            dnsCache.AddMapping(domains[i], ips[i]);
+        }
+        cout << "Used " << dnsCache.size() << " predefined entries (duplicates might overwrite)." << endl;
+    }
+
+    cout << "\n--- Initial Table ---" << endl;
     dnsCache.PrintTable();
 
-    string domainToFind = "example.com";
-    cout << "Test : string operator[](const string& domain) : Domain " << domainToFind;
-    try {
-        string foundIp = dnsCache[domainToFind];
-        cout << " IP   " << foundIp << endl;
-    }
-    catch (const std::out_of_range& e) {
-        cout << " - Error: " << e.what() << endl;
+    string userInput;
+    while (true) {
+        cout << "\nEnter domain, IP, 'print', 'add', or 'exit': ";
+        if (!getline(cin, userInput)) {
+            cerr << "\nInput error. Exiting." << endl;
+            break;
+        }
+
+        if (userInput == "exit") {
+            break;
+        }
+        else if (userInput == "print") {
+            dnsCache.PrintTable();
+        }
+        else if (userInput == "add") {
+            string newDomain, newIp;
+            cout << "Enter new domain: ";
+            if (!getline(cin, newDomain) || newDomain.empty()) {
+                cerr << "Invalid or empty domain input. Skipping add." << endl;
+                continue;
+            }
+            cout << "Enter new IP: ";
+            if (!getline(cin, newIp) || newIp.empty()) {
+                cerr << "Invalid or empty IP input. Skipping add." << endl;
+                continue;
+            }
+            dnsCache.AddMapping(newDomain, newIp);
+            cout << "Mapping added/updated for '" << newDomain << "'." << endl;
+        }
+        else if (userInput.empty()) {
+            continue;
+        }
+        else {
+            bool found = false;
+            try {
+                string foundIp = dnsCache[userInput];
+                cout << "  -> Found IP: " << foundIp << endl;
+                found = true;
+            }
+            catch (const std::out_of_range&) {
+                try {
+                    string foundDomain = dnsCache.getDomainByIp(userInput);
+                    cout << "  -> Found Domain: " << foundDomain << endl;
+                    found = true;
+                }
+                catch (const std::out_of_range&) {
+                }
+            }
+
+            if (!found) {
+                cout << "  -> '" << userInput << "' not found as a known domain or IP." << endl;
+            }
+        }
     }
 
-    string ipToFind = "127.0.0.1";
-    cout << "Test : string getDomainByIp(const string& ip) : IP " << ipToFind;
-    try {
-        string foundDomain = dnsCache.getDomainByIp(ipToFind);
-        cout << " Domain " << foundDomain << endl;
-    }
-    catch (const std::out_of_range& e) {
-        cout << " - Error: " << e.what() << endl;
-    }
+    cout << "\nExiting program. Goodbye!" << endl;
 
-    string nonExistentDomain = "unknown.net";
-    cout << "Test : string operator[](const string& domain) : Domain " << nonExistentDomain;
-    try {
-        string foundIp = dnsCache[nonExistentDomain];
-        cout << " IP   '" << foundIp << "'" << endl;
-    }
-    catch (const std::out_of_range& e) {
-        cout << " - Error correctly caught: " << e.what() << endl;
-    }
-
-    string domainForFuncCall = "test.org";
-    cout << "Test : string operator()(const string& domain) : Domain " << domainForFuncCall;
-    try {
-        string foundIp = dnsCache(domainForFuncCall); // Використання () для Домен -> IP
-        cout << " IP   " << foundIp << endl;
-    }
-    catch (const std::out_of_range& e) {
-        cout << " - Error: " << e.what() << endl;
-    }
-
-    // Прибрано тест для operator() з IP, оскільки це перевантаження видалено
-    string nonExistentIp = "192.168.1.1";
-    cout << "Test : string getDomainByIp(const string& ip)  : IP " << nonExistentIp; // Тест тепер через getDomainByIp
-    try {
-        string foundDomain = dnsCache.getDomainByIp(nonExistentIp); // Використання getDomainByIp
-        cout << " Domain " << foundDomain << endl;
-    }
-    catch (const std::out_of_range& e) {
-        cout << " - Error correctly caught: " << e.what() << endl;
-    }
-
-
-    cout << "\nTesting output operator << :" << endl;
-    cout << dnsCache;
-
-    /*
-    cout << "\nTesting input operator >> (enter 2 entries for test):" << endl;
-    DomainIpMap newCache;
-    if (cin >> newCache) {
-       cout << "\nData entered via input operator:" << endl;
-       cout << newCache;
-    } else {
-       cerr << "\nFailed to read data using input operator." << endl;
-    }
-    */
-
-    cout << "\n--- End test ---" << endl;
     return 0;
 }

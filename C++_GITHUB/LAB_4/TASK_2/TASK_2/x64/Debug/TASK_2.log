@@ -1,2 +1,5 @@
 ﻿  TASK_2.cpp
+C:\Users\mainb\OneDrive\Desktop\OOP\C++_GITHUB\LAB_4\TASK_2\TASK_2\TASK_2.cpp(73,41): warning C4101: 'oor': unreferenced local variable
+C:\Users\mainb\OneDrive\Desktop\OOP\C++_GITHUB\LAB_4\TASK_2\TASK_2\TASK_2.cpp(82,41): warning C4101: 'oor': unreferenced local variable
+C:\Users\mainb\OneDrive\Desktop\OOP\C++_GITHUB\LAB_4\TASK_2\TASK_2\TASK_2.cpp(156,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   TASK_2.vcxproj -> C:\Users\mainb\OneDrive\Desktop\OOP\C++_GITHUB\LAB_4\TASK_2\x64\Debug\TASK_2.exe
