@@ -146,6 +146,27 @@ public:
         return true;
     }
 
+
+    static int getObjectCount() { return objectCount; }
+
+    int getSize() const { return size; }
+
+    double& operator[](int index) {
+        if (index < 0 || index >= size) throw out_of_range("Index out of range");
+        return data[index];
+    }
+
+    const double& operator[](int index) const {
+        if (index < 0 || index >= size) throw out_of_range("Index out of range");
+        return data[index];
+    }
+};
+
+int VectorDouble::objectCount = 0;
+
+VectorDouble operator*(double scalar, const VectorDouble& vec) {
+    return vec * scalar;
+}
     friend ostream& operator<<(ostream& os, const VectorDouble& vec) {
         if (!vec.data) { os << "[invalid vector]"; return os; }
         os << fixed << setprecision(2);
@@ -172,27 +193,6 @@ public:
         }
         return is;
     }
-
-    static int getObjectCount() { return objectCount; }
-
-    int getSize() const { return size; }
-
-    double& operator[](int index) {
-        if (index < 0 || index >= size) throw out_of_range("Index out of range");
-        return data[index];
-    }
-
-    const double& operator[](int index) const {
-        if (index < 0 || index >= size) throw out_of_range("Index out of range");
-        return data[index];
-    }
-};
-
-int VectorDouble::objectCount = 0;
-
-VectorDouble operator*(double scalar, const VectorDouble& vec) {
-    return vec * scalar;
-}
 
 int main() {
     srand(static_cast<unsigned int>(time(0)));
@@ -250,7 +250,7 @@ int main() {
         cout << "v2 = " << v2 << endl;
         cout << "v3 = " << v3 << endl;
         cout << "Current object count: " << VectorDouble::getObjectCount() << endl;
-
+        v1 = 10.5 * v1;
         cout << "\n--- Calculating Expressions (Showing Operation Results) ---" << endl;
 
         cout << "\nExpression 1: res1 = (v1 + v2) * 1.5 - v3++ / 2.0" << endl;
